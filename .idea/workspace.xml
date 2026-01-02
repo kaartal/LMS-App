@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="33484977-05ec-402e-a671-0b8d22633738" name="Changes" comment="Add login and register form, UI Main panel" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;kaartal&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/kaartal/lifeManagmentSystemApplication.git",
+    "accountId": "cde8cc80-8967-44d9-b081-fa258300ec47"
+  }
+}]]></component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 4
+}</component>
+  <component name="ProjectId" id="37EsF7hLZ0WSSloc5ZgeNzHISfI" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.LoginUser.executor": "Run",
+    "Application.Main.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/halid/OneDrive/Dokumenti/GitHub/lifeManagmentSystemApplication",
+    "project.structure.last.edited": "Libraries",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\halid\OneDrive\Dokumenti\GitHub\lifeManagmentSystem\src\lifemanagmentsystem" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\halid\OneDrive\Dokumenti\GitHub\lifeManagmentApp" />
+      <recent name="C:\Users\halid\OneDrive\Dokumenti\GitHub\lifeManagmentSystem\src\financeTracker" />
+    </key>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="33484977-05ec-402e-a671-0b8d22633738" name="Changes" comment="" />
+      <created>1766479461399</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1766479461399</updated>
+    </task>
+    <task id="LOCAL−00001" summary="Added financeTracker form in Project">
+      <option name="closed" value="true" />
+      <created>1766588251259</created>
+      <option name="number" value="LOCAL−00001" />
+      <option name="presentableId" value="LOCAL−00001" />
+      <updated>1766588251259</updated>
+    </task>
+    <task id="LOCAL−00002" summary="Added financeTracker form in Project">
+      <option name="closed" value="true" />
+      <created>1766588282868</created>
+      <option name="number" value="LOCAL−00002" />
+      <option name="presentableId" value="LOCAL−00002" />
+      <updated>1766588282868</updated>
+    </task>
+    <task id="LOCAL−00003" summary="Added financeTracker form in Project">
+      <option name="closed" value="true" />
+      <created>1766588328236</created>
+      <option name="number" value="LOCAL−00003" />
+      <option name="presentableId" value="LOCAL−00003" />
+      <updated>1766588328236</updated>
+    </task>
+    <task id="LOCAL−00004" summary="Added others trackers, simple UI and functions">
+      <option name="closed" value="true" />
+      <created>1767310689227</created>
+      <option name="number" value="LOCAL−00004" />
+      <option name="presentableId" value="LOCAL−00004" />
+      <updated>1767310689228</updated>
+    </task>
+    <task id="LOCAL−00005" summary="Add login and register form, UI Main panel">
+      <option name="closed" value="true" />
+      <created>1767379929514</created>
+      <option name="number" value="LOCAL−00005" />
+      <option name="presentableId" value="LOCAL−00005" />
+      <updated>1767379929514</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Added financeTracker form in Project" />
+    <MESSAGE value="Added others trackers, simple UI and functions" />
+    <MESSAGE value="Add login and register form, UI Main panel" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add login and register form, UI Main panel" />
+  </component>
+</project>
