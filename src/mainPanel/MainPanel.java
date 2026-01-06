@@ -113,7 +113,7 @@ public class MainPanel extends JPanel {
         }
 
         if (sectionPosition == 1) {
-            FinanceTrackerForm financeTrackerForm = new FinanceTrackerForm();
+            FinanceTrackerForm financeTrackerForm = new FinanceTrackerForm(currentUserEmail);
 
             JFrame frame = new JFrame("Finance Tracker");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -129,7 +129,7 @@ public class MainPanel extends JPanel {
         }
 
         if (sectionPosition == 2) {
-            SleepTracker sleepTrackerForm = new SleepTracker();
+            SleepTracker sleepTrackerForm = new SleepTracker(currentUserEmail);
 
             JFrame frame = new JFrame("Sleep Tracker");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -145,7 +145,7 @@ public class MainPanel extends JPanel {
         }
 
         if (sectionPosition == 3) {
-            StudyPlanner sleepTrackerForm = new StudyPlanner();
+            StudyPlanner sleepTrackerForm = new StudyPlanner(currentUserEmail);
 
             JFrame frame = new JFrame("Sleep Tracker");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -161,7 +161,7 @@ public class MainPanel extends JPanel {
         }
 
         if (sectionPosition == 4) {
-            FitnessPlanner sleepTrackerForm = new FitnessPlanner();
+            FitnessPlanner sleepTrackerForm = new FitnessPlanner(currentUserEmail);
 
             JFrame frame = new JFrame("Sleep Tracker");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
