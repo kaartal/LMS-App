@@ -52,23 +52,20 @@ public class FinanceTrackerForm {
 
         manager = new TransactionTransfer();
 
-        //CATCH THEME FROM USER
         UserService userService = new UserService();
         String theme = userService.getUserTheme(currentUserEmail);
         Color bgColor = SessionManager.getColorFromTheme(theme);
 
-        // GIVE THEME FROM USER TO PANEL
         mainPanel = new JPanel(new BorderLayout(15, 15));
         mainPanel.setBorder(new EmptyBorder(15, 15, 15, 15));
         mainPanel.setBackground(bgColor);
-        mainPanel.setSize(950, 720);
-
+        mainPanel.setSize(1250, 720);
 
         JPanel topPanel = new JPanel();
         topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.Y_AXIS));
         topPanel.setBackground(bgColor);
 
-        backButton = newDesign("← Nazad", new Color(127, 140, 141));
+        backButton = newDesign("Nazad na glavni panel", new Color(127, 140, 141));
         JPanel backPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         backPanel.setBackground(bgColor);
         backPanel.add(backButton);
@@ -89,9 +86,6 @@ public class FinanceTrackerForm {
         typeDropdownMenu.addActionListener(e -> showHideCategoryByInput());
         showHideCategoryByInput();
 
-
-
-        // +++++BUTTONS+++++
         JPanel buttonPanel = new JPanel(new GridLayout(1, 5, 10, 10));
         buttonPanel.setBackground(bgColor);
 
@@ -109,13 +103,11 @@ public class FinanceTrackerForm {
 
         topPanel.add(buttonPanel);
 
-        // ++++TABLE++++
         transactionTableSection = new JTable();
         transactionTableSection.setRowHeight(28);
         transactionTableSection.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         transactionTableSection.setBackground(Color.WHITE);
         JScrollPane tableScroll = new JScrollPane(transactionTableSection);
-
 
         JPanel summaryPanel = new JPanel(new GridLayout(1, 3, 20, 10));
         summaryPanel.setBackground(bgColor);
@@ -128,11 +120,9 @@ public class FinanceTrackerForm {
         summaryPanel.add(expenseLabel);
         summaryPanel.add(balanceLabel);
 
-
         mainPanel.add(topPanel, BorderLayout.NORTH);
         mainPanel.add(tableScroll, BorderLayout.CENTER);
         mainPanel.add(summaryPanel, BorderLayout.SOUTH);
-
 
         backButton.addActionListener(e -> goBackToMainMenu());
         addTransactionButton.addActionListener(e -> addNewTransaction());
@@ -140,11 +130,24 @@ public class FinanceTrackerForm {
         deleteButton.addActionListener(e -> deleteSelectedTransactions());
         deleteAllTransactionButton.addActionListener(e -> deleteAllTransactions());
         exportButton.addActionListener(e -> exportData());
-        transactionTableSection.getSelectionModel()
-                .addListSelectionListener(e -> loadSelectedTransactionIntoFields());
+        transactionTableSection.getSelectionModel().addListSelectionListener(e -> loadSelectedTransactionIntoFields());
 
         loadDataIntoTable();
         updateSummary();
+
+        checkInitialBalance();
+    }
+
+    private void checkInitialBalance() {
+        TransactionTransfer.FinancialSummary summary = manager.getFinancialSummary(userEmail);
+        if (summary.getBalance() < 0) {
+            SwingUtilities.invokeLater(() -> {
+                JOptionPane.showMessageDialog(mainPanel,
+                        "Pažnja! Vaš trenutni saldo je u minusu: " + summary.getBalance(),
+                        "Finansijsko upozorenje",
+                        JOptionPane.WARNING_MESSAGE);
+            });
+        }
     }
 
 
@@ -249,7 +252,7 @@ public class FinanceTrackerForm {
         try {
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setDialogTitle("Odaberite lokaciju za eksport");
-            fileChooser.setSelectedFile(new File("finance_export.txt"));
+            fileChooser.setSelectedFile(new File("FinanceStatus.pdf"));
             int option = fileChooser.showSaveDialog(mainPanel);
             if (option != JFileChooser.APPROVE_OPTION) return;
 

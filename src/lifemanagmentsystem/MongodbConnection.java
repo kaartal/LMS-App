@@ -4,7 +4,8 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoDatabase;
 
 public class MongodbConnection {
-
+    //private static final String URI = "";
+    //private static final String DB_NAME = "LMS";
     private static final String URI = "mongodb://localhost:27017";
     private static final String DB_NAME = "LMS";
     private static MongoClient client = null;
@@ -14,5 +15,7 @@ public class MongodbConnection {
         }
         return client.getDatabase(DB_NAME);
     }
+
+
 
 }

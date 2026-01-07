@@ -5,6 +5,8 @@ public class HabitRecord {
     private String habit;
     private boolean completed;
     private String date;
+    //private boolean completed;
+    //private String date;
 
     public HabitRecord(String userEmail, String habit, boolean completed, String date) {
         this.userEmail = userEmail;
@@ -17,4 +19,6 @@ public class HabitRecord {
     public String getHabit() { return habit; }
     public boolean isCompleted() { return completed; }
     public String getDate() { return date; }
+    //public boolean isCompleted() { return completed; }
+    //public String getDate() { return date; }
 }

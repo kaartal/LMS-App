@@ -18,6 +18,10 @@ public class FitnessRecord {
         this.intensityLevel = intensityLevel;
     }
 
+
+
+    //public String email() { return email; }
+    //public String dateFitnes() { return date; }
     public String getUserEmail() { return userEmail; }
     public String getDate() { return date; }
     public double getCalories() { return calories; }

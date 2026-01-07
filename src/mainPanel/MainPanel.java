@@ -1,6 +1,7 @@
 package mainPanel;
 
 import accountDetails.AccountDetailsFrame;
+import calendarTracker.CalendarRecord;
 import financeTracker.FinanceTrackerForm;
 import fitnesTracker.FitnessPlanner;
 import habitTracker.HabitRecord;
@@ -59,7 +60,7 @@ public class MainPanel extends JPanel {
 
         for (int i = 0; i < featureButtons.length; i++) {
             JButton button = featureButtons[i];
-            button.setFont(new Font("Segoe UI", Font.BOLD, 14));
+            button.setFont(new Font("Segoe UI", Font.BOLD, 18));
             button.setBackground(new Color(70, 130, 180));
             button.setForeground(Color.WHITE);
             button.setFocusPainted(false);
@@ -92,105 +93,150 @@ public class MainPanel extends JPanel {
         //logoutButton = new JButton("Odjavi se");
     //}
 
+
+
     private void showFeatureInProgress(int sectionPosition) {
-        String[] sectionNames = {
-                "Account Details",
-                "Finance Tracker",
-                "Task Planner",
-                "Meal Planner",
-                "Study Planner",
-                "Fitness Planner"
-        };
+        JPanel targetPanel = null;
+        String title = "";
 
-        if (sectionPosition == 0) {
-            AccountDetailsFrame frame = new AccountDetailsFrame(currentUserEmail);
-            frame.setVisible(true);
-            Window mainWindow = SwingUtilities.getWindowAncestor(this);
-            mainWindow.setVisible(false);
-            frame.setSize(mainWindow.getSize());
-            frame.setLocation(mainWindow.getLocation());
-            return;
+        switch (sectionPosition) {
+            case 0:
+                AccountDetailsFrame accFrame = new AccountDetailsFrame(currentUserEmail);
+                openNewWindow(accFrame, "Account Details");
+                return;
+            case 1:
+                targetPanel = new FinanceTrackerForm(currentUserEmail).getMainPanel();
+                title = "Finance Tracker";
+                break;
+            case 2:
+                targetPanel = new SleepTracker(currentUserEmail).getMainPanel();
+                title = "Sleep Tracker";
+                break;
+            case 3:
+                targetPanel = new StudyPlanner(currentUserEmail).getMainPanel();
+                title = "Study Planner";
+                break;
+            case 4:
+                targetPanel = new FitnessPlanner(currentUserEmail).getMainPanel();
+                title = "Fitness Planner";
+                break;
+            case 5:
+                targetPanel = new calendarTracker.CalendarTracker(currentUserEmail).getMainPanel();
+                title = "Godišnji Planer i Kalendar";
+                break;
         }
 
-        if (sectionPosition == 1) {
-            FinanceTrackerForm financeTrackerForm = new FinanceTrackerForm(currentUserEmail);
-
-            JFrame frame = new JFrame("Finance Tracker");
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setContentPane(financeTrackerForm.getMainPanel());
-
-            Window mainWindow = SwingUtilities.getWindowAncestor(this);
-            frame.setSize(mainWindow.getSize());
-            frame.setLocation(mainWindow.getLocation());
-
-            mainWindow.setVisible(false);
-            frame.setVisible(true);
-            return;
+        if (targetPanel != null) {
+            JFrame newFrame = new JFrame(title);
+            openNewWindow(newFrame, title);
+            newFrame.setContentPane(targetPanel);
         }
+    }
 
-        if (sectionPosition == 2) {
-            SleepTracker sleepTrackerForm = new SleepTracker(currentUserEmail);
+    private void openNewWindow(Window newWindow, String title) {
+        Window mainWindow = SwingUtilities.getWindowAncestor(this);
+        if (newWindow instanceof JFrame) ((JFrame) newWindow).setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-            JFrame frame = new JFrame("Sleep Tracker");
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setContentPane(sleepTrackerForm.getMainPanel());
+        newWindow.setSize(mainWindow.getSize());
+        newWindow.setLocation(mainWindow.getLocation());
+        mainWindow.setVisible(false);
+        newWindow.setVisible(true);
+    }
 
-            Window mainWindow = SwingUtilities.getWindowAncestor(this);
-            frame.setSize(mainWindow.getSize());
-            frame.setLocation(mainWindow.getLocation());
+    //private void showFeatureInProgress(int sectionPosition) {
+        //String[] sectionNames = {
+                //"Account Details",
+                //"Finance Tracker",
+                //"Task Planner",
+                //"Meal Planner",
+                //"Study Planner",
+                //"Fitness Planner"
+        //};
+//
+        //if (sectionPosition == 0) {
+            //AccountDetailsFrame frame = new AccountDetailsFrame(currentUserEmail);
+           // frame.setVisible(true);
+           // Window mainWindow = SwingUtilities.getWindowAncestor(this);
+           // mainWindow.setVisible(false);
+          //  frame.setSize(mainWindow.getSize());
+           // frame.setLocation(mainWindow.getLocation());
+           // return;
+        //}
+//
+        //if (sectionPosition == 1) {
+           // FinanceTrackerForm financeTrackerForm = new FinanceTrackerForm(currentUserEmail);
+//
+            //JFrame frame = new JFrame("Finance Tracker");
+            //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            //frame.setContentPane(financeTrackerForm.getMainPanel());
+//
+            //Window mainWindow = SwingUtilities.getWindowAncestor(this);
+            //frame.setSize(mainWindow.getSize());
+            //frame.setLocation(mainWindow.getLocation());
+//
+            //mainWindow.setVisible(false);
+            //frame.setVisible(true);
+            //return;
+        //}
 
-            mainWindow.setVisible(false);
-            frame.setVisible(true);
-            return;
-        }
+        //if (sectionPosition == 2) {
+            //SleepTracker sleepTrackerForm = new SleepTracker(currentUserEmail);
+//
+            //JFrame frame = new JFrame("Sleep Tracker");
+            //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            //frame.setContentPane(sleepTrackerForm.getMainPanel());
+//
+            //Window mainWindow = SwingUtilities.getWindowAncestor(this);
+            //frame.setSize(mainWindow.getSize());
+            //frame.setLocation(mainWindow.getLocation());
+//
+            //mainWindow.setVisible(false);
+            //frame.setVisible(true);
+            //return;
+        //}
 
-        if (sectionPosition == 3) {
-            StudyPlanner sleepTrackerForm = new StudyPlanner(currentUserEmail);
+        //if (sectionPosition == 3) {
+           // StudyPlanner sleepTrackerForm = new StudyPlanner(currentUserEmail);
+//
+            // JFrame frame = new JFrame("Sleep Tracker");
+           // frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+          //  frame.setContentPane(sleepTrackerForm.getMainPanel());
 
-            JFrame frame = new JFrame("Sleep Tracker");
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setContentPane(sleepTrackerForm.getMainPanel());
+         //   Window mainWindow = SwingUtilities.getWindowAncestor(this);
+         //   frame.setSize(mainWindow.getSize());
+         //   frame.setLocation(mainWindow.getLocation());
+//
+          //   mainWindow.setVisible(false);
+         //   frame.setVisible(true);
+         //   return;
+       // }
 
-            Window mainWindow = SwingUtilities.getWindowAncestor(this);
-            frame.setSize(mainWindow.getSize());
-            frame.setLocation(mainWindow.getLocation());
-
-            mainWindow.setVisible(false);
-            frame.setVisible(true);
-            return;
-        }
-
-        if (sectionPosition == 4) {
-            FitnessPlanner sleepTrackerForm = new FitnessPlanner(currentUserEmail);
-
-            JFrame frame = new JFrame("Sleep Tracker");
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setContentPane(sleepTrackerForm.getMainPanel());
-
-            Window mainWindow = SwingUtilities.getWindowAncestor(this);
-            frame.setSize(mainWindow.getSize());
-            frame.setLocation(mainWindow.getLocation());
-
-            mainWindow.setVisible(false);
-            frame.setVisible(true);
-            return;
-        }
-
-        if (sectionPosition == 5) {
-            HabitTracker sleepTrackerForm = new HabitTracker(currentUserEmail);
-
-            JFrame frame = new JFrame("Sleep Tracker");
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setContentPane(sleepTrackerForm.getMainPanel());
-
-            Window mainWindow = SwingUtilities.getWindowAncestor(this);
-            frame.setSize(mainWindow.getSize());
-            frame.setLocation(mainWindow.getLocation());
-
-            mainWindow.setVisible(false);
-            frame.setVisible(true);
-            return;
-        }
+   //     if (sectionPosition == 4) {
+          //  FitnessPlanner sleepTrackerForm = new FitnessPlanner(currentUserEmail);
+//
+           //  JFrame frame = new JFrame("Sleep Tracker");
+          //  frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+         //   frame.setContentPane(sleepTrackerForm.getMainPanel());
+//
+           //  Window mainWindow = SwingUtilities.getWindowAncestor(this);
+          //  frame.setSize(mainWindow.getSize());
+          //  frame.setLocation(mainWindow.getLocation());
+//
+           //  mainWindow.setVisible(false);
+          //  frame.setVisible(true);
+           // return;
+      //  }
+//
+      //   if (sectionPosition == 5) {
+        //    calendarTracker.CalendarTracker calendarForm = new calendarTracker.CalendarTracker(currentUserEmail);
+//
+          //   JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
+         //   frame.setTitle("Godišnji Planer i Kalendar");
+        //    frame.setContentPane(calendarForm.getMainPanel());
+          //  frame.revalidate();
+         //   frame.repaint();
+         //   return;
+       // }
 
 
         //if (featureIndex == 1) {
@@ -203,23 +249,23 @@ public class MainPanel extends JPanel {
            // return;
         //}
 
-        String message = String.format(
-                "<html><div style='text-align: center;'><h3>%s</h3>"
-                        + "<p style='margin: 10px 0;'>Ova funkcionalnost je trenutno u izradi.</p>"
-                        + "<p>Vraćamo se uskoro sa punom verzijom!</p></div></html>",
-                sectionNames[sectionPosition]
-        );
-
-        JLabel messageLabel = new JLabel(message);
-        messageLabel.setHorizontalAlignment(SwingConstants.CENTER);
-
-        JOptionPane.showMessageDialog(
-                this,
-                messageLabel,
-                "Funkcionalnost u izradi",
-                JOptionPane.INFORMATION_MESSAGE
-        );
-    }
+        //String message = String.format(
+          //      "<html><div style='text-align: center;'><h3>%s</h3>"
+             //           + "<p style='margin: 10px 0;'>Ova funkcionalnost je trenutno u izradi.</p>"
+              //          + "<p>Vraćamo se uskoro sa punom verzijom!</p></div></html>",
+             //   sectionNames[sectionPosition]
+       // );
+//
+        // JLabel messageLabel = new JLabel(message);
+       // messageLabel.setHorizontalAlignment(SwingConstants.CENTER);
+//
+        // JOptionPane.showMessageDialog(
+          //      this,
+         //       messageLabel,
+           //     "Funkcionalnost u izradi",
+            //    JOptionPane.INFORMATION_MESSAGE
+      //  );
+ //   }
 
     //public Color getColorFromTheme(String theme) {
        // if (theme == null) {

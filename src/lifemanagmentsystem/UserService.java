@@ -60,17 +60,17 @@ public class UserService {
     public Document getUserByEmail(String email) {
 
         return users.find(new Document("email", email)).first();
-    }
+    }}
 
-    public boolean updateUser(String email, String name, String lastname, String password, String theme) {
-        Document update = new Document("name", name)
-                .append("lastname", lastname)
-                .append("password", password);
-
-        return users.updateOne(
-                new Document("email", email),
-                new Document("$set", update)
-        ).getModifiedCount() > 0;
-    }
-
-}
+    //public boolean updateUser(String email, String name, String lastname, String password, String theme) {
+        //Document update = new Document("name", name)
+                //.append("lastname", lastname)
+              //  .append("password", password);
+//
+        //return users.updateOne(
+              //  new Document("email", email),
+             //   new Document("$set", update)
+        //).getModifiedCount() > 0;
+    //}
+//
+//}

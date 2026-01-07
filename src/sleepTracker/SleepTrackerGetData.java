@@ -15,8 +15,8 @@ public class SleepTrackerGetData {
     public double getAverageSleepHours() {
         if (sleepRecords.isEmpty()) return 0;
         double total = 0;
-        for (SleepRecord r : sleepRecords) {
-            total += r.getHours();
+        for (SleepRecord recrodItem : sleepRecords) {
+            total += recrodItem.getHours();
         }
         return total / sleepRecords.size();
     }

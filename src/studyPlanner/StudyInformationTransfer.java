@@ -48,7 +48,6 @@ public class StudyInformationTransfer {
 
         if (doc != null) {
             for (String subject : record.getStudentSubjectGrades().keySet()) {
-                @SuppressWarnings("unchecked")
                 ArrayList<Integer> gradesFromDB = (ArrayList<Integer>) doc.get(subject);
                 if (gradesFromDB != null) {
                     record.getStudentSubjectGrades().put(subject, gradesFromDB);

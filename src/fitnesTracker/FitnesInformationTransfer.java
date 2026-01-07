@@ -24,6 +24,11 @@ public class FitnesInformationTransfer {
                 .append("duration", record.getDurationMinutes())
                 .append("distance", record.getDistanceKilometers())
                 .append("intensity", record.getIntensityLevel());
+
+
+         //.append("duration", record.getDurationMinutes())
+                //.append("distance", record.getDistanceKilometers())
+                //.append("intensity", record.getIntensityLevel());
         collection.insertOne(doc);
     }
 
@@ -34,6 +39,9 @@ public class FitnesInformationTransfer {
     public ArrayList<FitnessRecord> getAllRecords(String userEmail) {
         ArrayList<FitnessRecord> records = new ArrayList<>();
         FindIterable<Document> docs = collection.find(new Document("userEmail", userEmail));
+
+        //public ArrayList<FitnessRecord> getAllRecords(String userEmail)
+
 
         for (Document doc : docs) {
             String date = doc.getString("date");
@@ -49,6 +57,10 @@ public class FitnesInformationTransfer {
                     duration,
                     distance,
                     intensity
+                    //calories,
+                    //duration,
+                    //distance,
+                    //intensity
             ));
         }
 

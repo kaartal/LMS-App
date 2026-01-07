@@ -101,24 +101,24 @@ public class LoginUser extends JFrame {
         fieldPanel.setBackground(new Color(0,0,0,0));
 
         JLabel label = new JLabel(labelText);
-        label.setFont(labelFont);
+         label.setFont(labelFont);
         label.setForeground(Color.WHITE);
-        label.setAlignmentX(Component.LEFT_ALIGNMENT);
+         label.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         JTextField field;
         if (isEmail) {
-            inputEmail = new JTextField();
+             inputEmail = new JTextField();
             field = inputEmail;
         } else {
             inputPassword = new JPasswordField();
             field = inputPassword;
         }
-        field.setFont(inputFont);
+          field.setFont(inputFont);
         field.setMaximumSize(new Dimension(450, 40));
         field.setAlignmentX(Component.LEFT_ALIGNMENT);
         field.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(Color.WHITE, 1, true),
-                BorderFactory.createEmptyBorder(5, 10, 5, 10)
+                    BorderFactory.createLineBorder(Color.WHITE, 1, true),
+                  BorderFactory.createEmptyBorder(5, 10, 5, 10)
         ));
 
 
@@ -132,12 +132,12 @@ public class LoginUser extends JFrame {
     private JButton createButton(String text, Color color) {
         JButton button = new JButton(text);
         button.setFont(new Font("Segoe UI", Font.BOLD, 16));
-        button.setBackground(color);
+            button.setBackground(color);
         button.setForeground(Color.WHITE);
-        button.setFocusPainted(false);
-        button.setBorder(BorderFactory.createEmptyBorder(10,15,10,15));
+         button.setFocusPainted(false);
+         button.setBorder(BorderFactory.createEmptyBorder(10,15,10,15));
         button.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        button.setPreferredSize(new Dimension(180, 45));
+          button.setPreferredSize(new Dimension(180, 45));
         return button;
     }
 
@@ -150,18 +150,18 @@ public class LoginUser extends JFrame {
             return;
         }
 
-        if (userService.loginUser(email, password)) {
+          if (userService.loginUser(email, password)) {
             SessionManager.login(email);
 
             dispose();
-            JFrame frame = new JFrame("Life Management System");
-            frame.setSize(650, 720);
+              JFrame frame = new JFrame("Life Management System");
+                  frame.setSize(650, 720);
             frame.setLocationRelativeTo(null);
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.add(new MainPanel(email));
+                   frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                frame.add(new MainPanel(email));
             frame.setVisible(true);
         } else {
-            JOptionPane.showMessageDialog(this, "Pogrešan email ili šifra!");
+              JOptionPane.showMessageDialog(this, "Pogrešan email ili šifra!");
         }
     }
 

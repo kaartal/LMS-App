@@ -8,18 +8,22 @@ import java.awt.*;
 
 public class RegisterUser extends JFrame { private JTextField inputName;
     private JLabel titleLabel;
+
     private JPanel nameLabel;
     private JTextField inputLastname;
-    private JLabel lastnameLabel;
-    private JLabel emailLabel;
+     private JLabel lastnameLabel;
+
+     private JLabel emailLabel;
     private JTextField inputEmail;
-    private JLabel passwordLabel;
-    private JPasswordField inputPassword;
+     private JLabel passwordLabel;
+     private JPasswordField inputPassword;
+
     private JPasswordField inputRepeatPassword;
-    private JLabel labelRepeatPassword;
+     private JLabel labelRepeatPassword;
     private JButton registerButton;
+
     private JButton backLogin;
-    private final UserService userService;
+     private final UserService userService;
     private JComboBox<String> themeComboBox;
 
 
@@ -52,30 +56,30 @@ public class RegisterUser extends JFrame { private JTextField inputName;
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.weightx = 1.0;
+         gbc.weightx = 1.0;
         gbc.anchor = GridBagConstraints.WEST;
-        gbc.insets = new Insets(5, 0, 5, 0);
+         gbc.insets = new Insets(5, 0, 5, 0);
 
         Font titleFont = new Font("Segoe UI", Font.BOLD, 28);
-        Font labelFont = new Font("Segoe UI", Font.BOLD, 15);
-        Font inputFont = new Font("Segoe UI", Font.PLAIN, 16);
+          Font labelFont = new Font("Segoe UI", Font.BOLD, 15);
+          Font inputFont = new Font("Segoe UI", Font.PLAIN, 16);
 
         JLabel titleLabel = new JLabel("Kreirajte račun");
-        titleLabel.setFont(titleFont);
+          titleLabel.setFont(titleFont);
         titleLabel.setForeground(Color.WHITE);
-        titleLabel.setFont(new Font("Arial", Font.PLAIN, 38));
+         titleLabel.setFont(new Font("Arial", Font.PLAIN, 38));
         titleLabel.setHorizontalAlignment(SwingConstants.LEFT);
 
-        mainPanel.add(titleLabel, gbc);
+          mainPanel.add(titleLabel, gbc);
 
-        gbc.gridy++;
+         gbc.gridy++;
         mainPanel.add(Box.createVerticalStrut(15), gbc);
 
         gbc.gridy++;
         mainPanel.add(createFieldPanel("Ime", labelFont, inputFont, "name"), gbc);
         gbc.gridy++;
         mainPanel.add(createFieldPanel("Prezime", labelFont, inputFont, "lastname"), gbc);
-        gbc.gridy++;
+          gbc.gridy++;
         mainPanel.add(createFieldPanel("Email adresa", labelFont, inputFont, "email"), gbc);
         gbc.gridy++;
         mainPanel.add(createFieldPanel("Lozinka", labelFont, inputFont, "password"), gbc);

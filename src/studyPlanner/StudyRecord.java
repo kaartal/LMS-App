@@ -59,4 +59,19 @@ public class StudyRecord {
         }
         return totalNumberOfGradesCount == 0 ? 0.0 : totalSumOfAllGrades / totalNumberOfGradesCount;
     }
+
+
+    //public double calculateOverallGradeAverage() {
+        //double totalSumOfAllGrades = 0;
+        //int totalNumberOfGradesCount = 0;
+//
+        //for (String currentSubjectKey : studentSubjectGrades.keySet()) {
+            //ArrayList<Integer> currentSubjectGradesList = studentSubjectGrades.get(currentSubjectKey);
+            //for (int individualGradeValue : currentSubjectGradesList) {
+                //totalSumOfAllGrades += individualGradeValue;
+                //totalNumberOfGradesCount++;
+            //}
+        //}
+        //return totalNumberOfGradesCount == 0 ? 0.0 : totalSumOfAllGrades / totalNumberOfGradesCount;
+    //}
 }

@@ -5,7 +5,7 @@ import java.awt.*;
 public class SessionManager {
 
     private static String loggedUserEmail;
-
+// THEME CRETAED BY USER; WILL STORE IN VARIABLE CURRENTTHEME
 
     private static String currentTheme = "Zelena";
 

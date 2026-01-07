@@ -38,64 +38,60 @@ public class SleepTracker {
         this.userEmail = loggedUserEmail;
         this.collection = MongodbConnection.getDatabase().getCollection("sleepTracker");
 
-
         UserService userService = new UserService();
         String theme = userService.getUserTheme(userEmail);
         Color bgColor = SessionManager.getColorFromTheme(theme);
 
-
         mainPanel = new JPanel(new BorderLayout(10, 10));
-        mainPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
+        mainPanel.setBorder(new EmptyBorder(15, 15, 15, 15));
         mainPanel.setBackground(bgColor);
 
-        JPanel topPanel = new JPanel();
-        topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.Y_AXIS));
-        topPanel.setBackground(bgColor);
+        JPanel topContainer = new JPanel();
+        topContainer.setLayout(new BoxLayout(topContainer, BoxLayout.Y_AXIS));
+        topContainer.setOpaque(false);
 
+        backButton = newButton("Nazad na glavni panel", new Color(101, 117, 129));
+        JPanel backWrapper = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        backWrapper.setOpaque(false);
+        backWrapper.add(backButton);
+        topContainer.add(backWrapper);
 
-        backButton = createModernButton("← Nazad", new Color(127, 140, 141));
-        JPanel backPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        backPanel.setBackground(bgColor);
-        backPanel.add(backButton);
-        topPanel.add(backPanel);
+        JPanel inputPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 10));
+        inputPanel.setOpaque(false);
 
+        dateField = createStyledTextField(10, LocalDate.now().toString());
+        startField = createStyledTextField(6, "22:00");
+        endField = createStyledTextField(6, "06:00");
 
-        JPanel inputPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        inputPanel.setBackground(bgColor);
-
-        dateField = new JTextField(8);
-        dateField.setText(LocalDate.now().toString());
-        startField = new JTextField(5);
-        startField.setText("22:00");
-        endField = new JTextField(5);
-        endField.setText("06:00");
-
-        addButton = createModernButton("Dodaj san", new Color(72, 201, 176));
-        deleteButton = createModernButton("Obriši san", new Color(231, 76, 60));
-        exportButton = createModernButton("Godišnji PDF", new Color(155, 89, 182));
-
-        inputPanel.add(new JLabel("Datum:"));
+        inputPanel.add(createLabel("Datum:"));
         inputPanel.add(dateField);
-        inputPanel.add(new JLabel("Početak:"));
+        inputPanel.add(createLabel("Početak:"));
         inputPanel.add(startField);
-        inputPanel.add(new JLabel("Kraj:"));
+        inputPanel.add(createLabel("Kraj:"));
         inputPanel.add(endField);
-        inputPanel.add(addButton);
-        inputPanel.add(deleteButton);
-        inputPanel.add(exportButton);
+        topContainer.add(inputPanel);
 
-        topPanel.add(inputPanel);
+        JPanel actionPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 10));
+        actionPanel.setOpaque(false);
+        addButton = newButton("Dodaj san", new Color(72, 201, 176));
+        deleteButton = newButton("Obriši san", new Color(231, 76, 60));
+        exportButton = newButton("Godišnji PDF", new Color(155, 89, 182));
 
+        actionPanel.add(addButton);
+        actionPanel.add(deleteButton);
+        actionPanel.add(exportButton);
+        topContainer.add(actionPanel);
+
+        mainPanel.add(topContainer, BorderLayout.NORTH);
 
         tableModel = new DefaultTableModel(new String[]{"Datum", "Početak", "Kraj", "Trajanje (h)"}, 0);
         sleepTable = new JTable(tableModel);
-        sleepTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         sleepTable.setRowHeight(25);
+        sleepTable.setFont(new java.awt.Font("Segoe UI", java.awt.Font.PLAIN, 14));
+
         JScrollPane scrollPane = new JScrollPane(sleepTable);
-
-        mainPanel.add(topPanel, BorderLayout.NORTH);
+        scrollPane.setPreferredSize(new Dimension(800, 300));
         mainPanel.add(scrollPane, BorderLayout.CENTER);
-
 
         addButton.addActionListener(e -> addSleepRecord());
         deleteButton.addActionListener(e -> deleteSleepRecord());
@@ -105,15 +101,28 @@ public class SleepTracker {
         loadData();
     }
 
+    private JTextField createStyledTextField(int columns, String text) {
+        JTextField field = new JTextField(columns);
+        field.setText(text);
+        field.setFont(new java.awt.Font("Segoe UI", java.awt.Font.PLAIN, 16));
+        field.setMargin(new Insets(4, 6, 4, 6));
+        return field;
+    }
+
+    private JLabel createLabel(String text) {
+        JLabel label = new JLabel(text);
+        label.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 14));
+        label.setForeground(Color.WHITE);
+        return label;
+    }
+
     private void addSleepRecord() {
         try {
             LocalDate date = LocalDate.parse(dateField.getText());
             LocalTime start = LocalTime.parse(startField.getText());
             LocalTime end = LocalTime.parse(endField.getText());
-
             Duration diff = Duration.between(start, end);
             if (diff.isNegative()) diff = diff.plusDays(1);
-
             double totalHours = diff.toMinutes() / 60.0;
 
             Document doc = new Document("userEmail", userEmail)
@@ -125,102 +134,62 @@ public class SleepTracker {
             collection.insertOne(doc);
             loadData();
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, "Greška! Provjerite formate (YYYY-MM-DD i HH:mm).");
+            JOptionPane.showMessageDialog(null, "Greška u formatu podataka.");
         }
     }
 
     private void deleteSleepRecord() {
         int selectedRow = sleepTable.getSelectedRow();
-        if (selectedRow == -1) {
-            JOptionPane.showMessageDialog(null, "Molimo označite red u tabeli koji želite obrisati.");
-            return;
-        }
-
+        if (selectedRow == -1) return;
         String date = tableModel.getValueAt(selectedRow, 0).toString();
         String start = tableModel.getValueAt(selectedRow, 1).toString();
-
-        int confirm = JOptionPane.showConfirmDialog(null, "Da li ste sigurni da želite obrisati ovaj unos?", "Potvrda", JOptionPane.YES_NO_OPTION);
-
-        if (confirm == JOptionPane.YES_OPTION) {
-            Document query = new Document("userEmail", userEmail)
-                    .append("date", date)
-                    .append("start", start);
-
-            collection.deleteOne(query);
+        if (JOptionPane.showConfirmDialog(null, "Obriši unos?", "Potvrda", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+            collection.deleteOne(new Document("userEmail", userEmail).append("date", date).append("start", start));
             loadData();
-            JOptionPane.showMessageDialog(null, "Unos obrisan.");
         }
     }
 
     private void loadData() {
         tableModel.setRowCount(0);
         for (Document doc : collection.find(new Document("userEmail", userEmail))) {
-            tableModel.addRow(new Object[]{
-                    doc.get("date"),
-                    doc.get("start"),
-                    doc.get("end"),
-                    doc.get("durationHours")
-            });
+            tableModel.addRow(new Object[]{doc.get("date"), doc.get("start"), doc.get("end"), doc.get("durationHours")});
         }
     }
 
     private void exportYearlyPDF() {
         try {
             com.itextpdf.text.Document document = new com.itextpdf.text.Document(PageSize.A4.rotate());
-            PdfWriter.getInstance(document, new FileOutputStream("Godisnji_Izvjestaj_Sna.pdf"));
+            PdfWriter.getInstance(document, new FileOutputStream("izvjestajSna.pdf"));
             document.open();
-
-            int yearToShow = LocalDate.now().getYear();
-            com.itextpdf.text.Font titleFont = new com.itextpdf.text.Font(com.itextpdf.text.Font.FontFamily.HELVETICA, 18, com.itextpdf.text.Font.BOLD);
-            Paragraph title = new Paragraph("FITNESS CALENDAR - GODINA " + yearToShow, titleFont);
+            int year = LocalDate.now().getYear();
+            Paragraph title = new Paragraph("SLEEP TRACKER - " + year, new Font(Font.FontFamily.HELVETICA, 18, Font.BOLD));
             title.setAlignment(Element.ALIGN_CENTER);
             title.setSpacingAfter(20);
             document.add(title);
 
             Map<String, Double> sleepMap = new HashMap<>();
             for (Document doc : collection.find(new Document("userEmail", userEmail))) {
-                String dStr = doc.getString("date");
-                Object durObj = doc.get("durationHours");
-                if (dStr != null && durObj != null) {
-                    sleepMap.put(dStr, Double.parseDouble(durObj.toString()));
-                }
+                sleepMap.put(doc.getString("date"), Double.parseDouble(doc.get("durationHours").toString()));
             }
 
             PdfPTable table = new PdfPTable(32);
             table.setWidthPercentage(100);
-            float[] widths = new float[32];
-            widths[0] = 4f;
-            for(int i=1; i<32; i++) widths[i] = 1f;
+            float[] widths = new float[32]; widths[0] = 4f; for(int i=1; i<32; i++) widths[i] = 1f;
             table.setWidths(widths);
 
             table.addCell(createHeaderCell("Mj"));
             for (int d = 1; d <= 31; d++) table.addCell(createHeaderCell(String.valueOf(d)));
 
             String[] mjeseci = {"Jan", "Feb", "Mar", "Apr", "Maj", "Jun", "Jul", "Avg", "Sep", "Okt", "Nov", "Dec"};
-
             for (int m = 1; m <= 12; m++) {
                 table.addCell(createHeaderCell(mjeseci[m-1]));
-                int daysInMonth = LocalDate.of(yearToShow, m, 1).lengthOfMonth();
+                int days = LocalDate.of(year, m, 1).lengthOfMonth();
                 for (int d = 1; d <= 31; d++) {
-                    if (d <= daysInMonth) {
-                        String key = String.format("%d-%02d-%02d", yearToShow, m, d);
-                        table.addCell(createColorCell(sleepMap.get(key)));
-                    } else {
-                        table.addCell(createEmptyCell());
-                    }
+                    if (d <= days) table.addCell(createColorCell(sleepMap.get(String.format("%d-%02d-%02d", year, m, d))));
+                    else table.addCell(createEmptyCell());
                 }
             }
             document.add(table);
-
-            document.add(new Paragraph("\nLegenda:"));
-            PdfPTable legenda = new PdfPTable(2);
-            legenda.setWidthPercentage(30);
-            legenda.setHorizontalAlignment(Element.ALIGN_LEFT);
-            addLegendaRow(legenda, "Loše (< 5h)", BaseColor.RED);
-            addLegendaRow(legenda, "Može bolje (5-8h)", BaseColor.YELLOW);
-            addLegendaRow(legenda, "Odlično (> 8h)", BaseColor.GREEN);
-            document.add(legenda);
-
             document.close();
             JOptionPane.showMessageDialog(null, "PDF kreiran!");
         } catch (Exception ex) {
@@ -229,7 +198,7 @@ public class SleepTracker {
     }
 
     private PdfPCell createHeaderCell(String text) {
-        PdfPCell cell = new PdfPCell(new Phrase(text, new com.itextpdf.text.Font(com.itextpdf.text.Font.FontFamily.HELVETICA, 7, com.itextpdf.text.Font.BOLD)));
+        PdfPCell cell = new PdfPCell(new Phrase(text, new Font(Font.FontFamily.HELVETICA, 7, Font.BOLD)));
         cell.setHorizontalAlignment(Element.ALIGN_CENTER);
         cell.setBackgroundColor(BaseColor.LIGHT_GRAY);
         return cell;
@@ -252,28 +221,21 @@ public class SleepTracker {
         return cell;
     }
 
-    private void addLegendaRow(PdfPTable table, String text, BaseColor color) {
-        PdfPCell c = new PdfPCell();
-        c.setBackgroundColor(color);
-        table.addCell(c);
-        table.addCell(new Phrase(text, new com.itextpdf.text.Font(com.itextpdf.text.Font.FontFamily.HELVETICA, 8)));
-    }
-
     private void goBack() {
         JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(mainPanel);
         frame.setContentPane(new MainPanel(userEmail));
         frame.revalidate();
-        frame.repaint();
     }
 
     public JPanel getMainPanel() { return mainPanel; }
 
-    private JButton createModernButton(String text, Color bg) {
+    private JButton newButton(String text, Color bg) {
         JButton b = new JButton(text);
         b.setBackground(bg);
         b.setForeground(Color.WHITE);
-        b.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 12));
+        b.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 13));
         b.setFocusPainted(false);
+        b.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
         return b;
     }
 }

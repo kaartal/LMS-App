@@ -53,7 +53,7 @@ public class AccountDetailsFrame extends JFrame {
         this.userService = new UserService();
 
         setTitle("Account Details");
-        setSize(950, 720);
+        setSize(1250,720);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
@@ -247,7 +247,7 @@ public class AccountDetailsFrame extends JFrame {
     private void goBackToMainPanel() {
         dispose();
         JFrame frame = new JFrame("Life Management System");
-        frame.setSize(950, 720);
+        setSize(1250,720);
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.add(new MainPanel(currentUserEmail));

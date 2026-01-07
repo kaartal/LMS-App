@@ -42,7 +42,7 @@ public class StudyPlanner {
         JPanel topPanel = new JPanel(new BorderLayout());
         topPanel.setBackground(backgroundColor);
 
-        backButton = createStyledButton("← Nazad", new Color(127, 140, 141));
+        backButton = createStyledButton("Nazad na glavni panel", new Color(127, 140, 141));
         backButton.addActionListener(e -> goBackToMainMenu());
         topPanel.add(backButton, BorderLayout.WEST);
 
@@ -128,6 +128,31 @@ public class StudyPlanner {
         }
     }
 
+
+
+    //private void inputGrade(String subjectName) {
+        //String input = JOptionPane.showInputDialog(mainPanel, "Unesite ocjenu za " + subjectName + " (1-5):");
+//
+        //if (input != null && !input.trim().isEmpty()) {
+            //try {
+                //int gradeValue = Integer.parseInt(input.trim());
+
+                //if (confirmAction == JOptionPane.YES_OPTION) {
+
+                    //studentRecord.addGradeToSubject(subjectName, gradeValue);
+
+                    //dbManager.addOrUpdateRecord(studentRecord);
+
+                    //updateTable();
+
+                    //JOptionPane.showMessageDialog(mainPanel, "Ocjena uspješno dodana!");
+                //}
+            //} catch (NumberFormatException ex) {
+                //JOptionPane.showMessageDialog(mainPanel, "Greška: Unesite cijeli broj (1-5)!");
+            //}
+        //}
+    //}
+
     private void updateTable() {
         tableModel.setRowCount(0);
 
@@ -150,6 +175,9 @@ public class StudyPlanner {
         tableModel.addRow(new Object[]{"<html><b>UKUPNI PROSJEK</b></html>", "", "<html><b>" + overallDisplay + "</b></html>"});
     }
 
+
+
+
     private void exportToPDF() {
         JFileChooser fileSaver = new JFileChooser();
         fileSaver.setSelectedFile(new java.io.File("Izvjestaj_Studije.pdf"));
@@ -159,13 +187,13 @@ public class StudyPlanner {
 
         try {
             Document pdfDoc = new Document(PageSize.A4, 36, 36, 50, 50);
-            PdfWriter.getInstance(pdfDoc, new FileOutputStream(savePath));
+  PdfWriter.getInstance(pdfDoc, new FileOutputStream(savePath));
             pdfDoc.open();
 
-            Font mainTitleFont = new Font(Font.FontFamily.HELVETICA, 22, Font.BOLD, new BaseColor(44, 62, 80));
-            Font subTitleFont = new Font(Font.FontFamily.HELVETICA, 12, Font.ITALIC, BaseColor.GRAY);
-            Font headerFont = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD, BaseColor.WHITE);
-            Font rowFont = new Font(Font.FontFamily.HELVETICA, 11, Font.NORMAL);
+             Font mainTitleFont = new Font(Font.FontFamily.HELVETICA, 22, Font.BOLD, new BaseColor(44, 62, 80));
+               Font subTitleFont = new Font(Font.FontFamily.HELVETICA, 12, Font.ITALIC, BaseColor.GRAY);
+              Font headerFont = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD, BaseColor.WHITE);
+               Font rowFont = new Font(Font.FontFamily.HELVETICA, 11, Font.NORMAL);
             Font footerFont = new Font(Font.FontFamily.HELVETICA, 14, Font.BOLD, new BaseColor(41, 128, 185));
 
             Paragraph title = new Paragraph("IZVJEŠTAJ O ŠKOLSKOM USPJEHU", mainTitleFont);
@@ -177,22 +205,25 @@ public class StudyPlanner {
             emailInfo.setSpacingAfter(5);
             pdfDoc.add(emailInfo);
 
-            Paragraph line = new Paragraph("______________________________________________________________________________");
+              Paragraph line = new Paragraph("______________________________________________________________________________");
             line.setAlignment(Element.ALIGN_CENTER);
-            line.setSpacingAfter(20);
-            pdfDoc.add(line);
+             line.setSpacingAfter(20);
+             pdfDoc.add(line);
 
             PdfPTable pdfTable = new PdfPTable(3);
-            pdfTable.setWidthPercentage(100);
-            pdfTable.setWidths(new float[]{30f, 50f, 20f});
+             pdfTable.setWidthPercentage(100);
+             pdfTable.setWidths(new float[]{30f, 50f, 20f});
 
             String[] headers = {"Predmet", "Lista ocjena", "Prosjek"};
             for(String h : headers) {
                 PdfPCell cell = new PdfPCell(new Phrase(h, headerFont));
-                cell.setBackgroundColor(new BaseColor(41, 128, 185));
-                cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                cell.setBackgroundColor(new BaseColor(41, 128, 185
+                ));
+                  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+
                 cell.setPadding(10);
-                cell.setBorderColor(BaseColor.WHITE);
+
+                  cell.setBorderColor(BaseColor.WHITE);
                 pdfTable.addCell(cell);
             }
 
@@ -203,7 +234,9 @@ public class StudyPlanner {
                 PdfPCell c1 = new PdfPCell(new Phrase(entry.getKey(), rowFont));
                 c1.setBackgroundColor(bgColor);
                 c1.setPadding(8);
+
                 pdfTable.addCell(c1);
+
 
                 String gradesStr = entry.getValue().isEmpty() ? "-" : entry.getValue().toString().replace("[", "").replace("]", "");
                 PdfPCell c2 = new PdfPCell(new Phrase(gradesStr, rowFont));
@@ -215,14 +248,21 @@ public class StudyPlanner {
                 double avg = studentRecord.calculateSubjectAverage(entry.getKey());
                 String stars = "";
                 if (avg >= 4.8) stars = " ***";
+
                 else if (avg >= 4.5) stars = " **";
+
                 else if (avg >= 4.0) stars = " *";
+
 
                 String avgStr = entry.getValue().isEmpty() ? "0.00" : String.format("%.2f", avg) + stars;
                 PdfPCell c3 = new PdfPCell(new Phrase(avgStr, rowFont));
+
                 c3.setBackgroundColor(bgColor);
+
                 c3.setPadding(8);
+
                 c3.setHorizontalAlignment(Element.ALIGN_CENTER);
+
                 pdfTable.addCell(c3);
 
                 rowCount++;
@@ -234,51 +274,63 @@ public class StudyPlanner {
             double overallAvg = studentRecord.calculateOverallGradeAverage();
             String overallStars = "";
             if (overallAvg >= 4.8) overallStars = " ***";
+
             else if (overallAvg >= 4.5) overallStars = " **";
+
             else if (overallAvg >= 4.0) overallStars = " *";
 
+
             PdfPTable summaryTable = new PdfPTable(1);
+
             summaryTable.setWidthPercentage(50);
+
             summaryTable.setHorizontalAlignment(Element.ALIGN_RIGHT);
 
             PdfPCell summaryCell = new PdfPCell(new Phrase("UKUPNA OCJENA: " + String.format("%.2f", overallAvg) + overallStars, footerFont));
             summaryCell.setBorderWidth(2);
+
             summaryCell.setBorderColor(new BaseColor(41, 128, 185));
+
             summaryCell.setPadding(15);
+
             summaryCell.setHorizontalAlignment(Element.ALIGN_CENTER);
 
             summaryTable.addCell(summaryCell);
             pdfDoc.add(summaryTable);
 
             Paragraph medalPara = new Paragraph("Status: " + getMedal(overallAvg), rowFont);
+
             medalPara.setAlignment(Element.ALIGN_RIGHT);
+
             pdfDoc.add(medalPara);
 
             pdfDoc.close();
             JOptionPane.showMessageDialog(mainPanel, "Moderni PDF izvještaj je spremljen!");
+
         } catch(Exception ex){
+
             JOptionPane.showMessageDialog(mainPanel, "Greška pri generisanju PDF-a: " + ex.getMessage());
         }
     }
 
     private String getMedal(double avg) {
         if (avg >= 4.8) return " (Zlatna medalja)";
-        if (avg >= 4.5) return " (Srebrna medalja)";
-        if (avg >= 4.0) return " (Bronzana medalja)";
+         if (avg >= 4.5) return " (Srebrna medalja)";
+         if (avg >= 4.0) return " (Bronzana medalja)";
         return "";
     }
 
     private void goBackToMainMenu() {
         JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(mainPanel);
-        parentFrame.setContentPane(new MainPanel(currentUserEmail));
-        parentFrame.revalidate();
+         parentFrame.setContentPane(new MainPanel(currentUserEmail));
+         parentFrame.revalidate();
         parentFrame.repaint();
     }
 
     private JButton createStyledButton(String text, Color bgColor) {
         JButton button = new JButton(text);
-        button.setBackground(bgColor);
-        button.setForeground(Color.WHITE);
+         button.setBackground(bgColor);
+         button.setForeground(Color.WHITE);
         button.setFocusPainted(false);
         button.setBorder(BorderFactory.createEmptyBorder(8, 15, 8, 15));
         button.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 13));
@@ -286,11 +338,11 @@ public class StudyPlanner {
     }
 
     private void showMissingGradesNotification() {
-        StringBuilder missingSubjects = new StringBuilder();
-        for (Map.Entry<String, ArrayList<Integer>> entry : studentRecord.getStudentSubjectGrades().entrySet()) {
+         StringBuilder missingSubjects = new StringBuilder();
+         for (Map.Entry<String, ArrayList<Integer>> entry : studentRecord.getStudentSubjectGrades().entrySet()) {
             if (entry.getValue().isEmpty()) missingSubjects.append("- ").append(entry.getKey()).append("\n");
-        }
-        if (missingSubjects.length() > 0) {
+         }
+         if (missingSubjects.length() > 0) {
             JOptionPane.showMessageDialog(mainPanel, "Predmeti bez ocjena:\n" + missingSubjects, "Podsjetnik", JOptionPane.INFORMATION_MESSAGE);
         }
     }

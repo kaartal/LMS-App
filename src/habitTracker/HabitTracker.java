@@ -2,16 +2,20 @@ package habitTracker;
 
 import mainPanel.MainPanel;
 import lifemanagmentsystem.SessionManager;
+import lifemanagmentsystem.UserService;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
+import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
-// Ispravni importi za PDF
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.Element;
@@ -21,9 +25,6 @@ import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
-
-// Import za datum
-import java.time.LocalDate;
 
 public class HabitTracker {
 
@@ -36,85 +37,118 @@ public class HabitTracker {
 
     private final HabitInformationTransfer dbManager;
     private final String userEmail;
+    private Color themeColor;
 
     public HabitTracker(String userEmail) {
         this.userEmail = userEmail;
-        dbManager = new HabitInformationTransfer();
+        this.dbManager = new HabitInformationTransfer();
+
+        UserService userService = new UserService();
+        String themeName = userService.getUserTheme(userEmail);
+        this.themeColor = SessionManager.getColorFromTheme(themeName);
 
         initUI();
         updateTable();
     }
 
     private void initUI() {
-        mainPanel = new JPanel(new BorderLayout(15, 15));
-        mainPanel.setBorder(new EmptyBorder(15, 15, 15, 15));
-        mainPanel.setBackground(Color.WHITE);
+        mainPanel = new JPanel(new BorderLayout(25, 25));
+        mainPanel.setBorder(new EmptyBorder(30, 30, 30, 30));
+        mainPanel.setBackground(themeColor);
 
-        // Top bar: nazad dugme + naslov
+
         JPanel topPanel = new JPanel(new BorderLayout());
-        topPanel.setBackground(Color.WHITE);
+        topPanel.setOpaque(false);
 
-        backButton = createButton("← Nazad", new Color(127, 140, 141));
+        backButton = createButton("← NAZAD", new Color(44, 62, 80));
         backButton.addActionListener(e -> goBack());
         topPanel.add(backButton, BorderLayout.WEST);
 
-        JLabel titleLabel = new JLabel("📝 Habit Tracker");
-        titleLabel.setFont(new java.awt.Font("Segoe UI", Font.BOLD, 20));
+        JLabel titleLabel = new JLabel("SISTEM ZA PRAĆENJE NAVIKA");
+        titleLabel.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 28));
+        titleLabel.setForeground(Color.WHITE);
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
         topPanel.add(titleLabel, BorderLayout.CENTER);
 
         mainPanel.add(topPanel, BorderLayout.NORTH);
 
-        // Input panel
-        JPanel inputPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 5));
-        inputPanel.setBackground(Color.WHITE);
 
-        habitField = new JTextField(15);
-        completedCheckBox = new JCheckBox("Završeno");
-        addButton = createButton("Dodaj", new Color(72, 201, 176));
+        JPanel centerContainer = new JPanel(new BorderLayout(20, 20));
+        centerContainer.setOpaque(false);
+
+
+        JPanel inputCard = new JPanel(new GridBagLayout());
+        inputCard.setBackground(new Color(255, 255, 255, 40));
+        inputCard.setBorder(new LineBorder(Color.WHITE, 1, true));
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(15, 15, 15, 15);
+        gbc.fill = GridBagConstraints.BOTH;
+
+        JLabel inputLabel = new JLabel("Naziv nove navike:");
+        inputLabel.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 14));
+        inputLabel.setForeground(Color.WHITE);
+        gbc.gridx = 0; gbc.gridy = 0;
+        inputCard.add(inputLabel, gbc);
+
+        habitField = new JTextField(25);
+        habitField.setFont(new java.awt.Font("Segoe UI", java.awt.Font.PLAIN, 18));
+        habitField.setPreferredSize(new Dimension(350, 45));
+        gbc.gridy = 1;
+        inputCard.add(habitField, gbc);
+
+        completedCheckBox = new JCheckBox("Označi kao izvršeno za danas");
+        completedCheckBox.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 14));
+        completedCheckBox.setForeground(Color.WHITE);
+        completedCheckBox.setOpaque(false);
+        gbc.gridy = 2;
+        inputCard.add(completedCheckBox, gbc);
+
+        JPanel btnPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
+        btnPanel.setOpaque(false);
+
+        addButton = createButton("DODAJ NAVIKU", new Color(39, 174, 96));
+        pdfButton = createButton("IZVEZI PDF", new Color(41, 128, 185));
+
         addButton.addActionListener(e -> addHabit());
-
-        pdfButton = createButton("Export PDF", new Color(52, 152, 219));
         pdfButton.addActionListener(e -> exportPDF());
 
-        inputPanel.add(new JLabel("Navika:"));
-        inputPanel.add(habitField);
-        inputPanel.add(completedCheckBox);
-        inputPanel.add(addButton);
-        inputPanel.add(pdfButton);
+        btnPanel.add(addButton);
+        btnPanel.add(pdfButton);
+        gbc.gridy = 3;
+        inputCard.add(btnPanel, gbc);
 
-        mainPanel.add(inputPanel, BorderLayout.CENTER);
+        centerContainer.add(inputCard, BorderLayout.NORTH);
 
-        // Tabela navika
-        tableModel = new DefaultTableModel(new Object[]{"Navika", "Status", "Procent"}, 0) {
+
+        tableModel = new DefaultTableModel(new Object[]{"NAVIKA", "DANAŠNJI STATUS", "PROGRESS"}, 0) {
             @Override
-            public boolean isCellEditable(int row, int col) {
-                return false;
-            }
+            public boolean isCellEditable(int row, int col) { return false; }
         };
         habitTable = new JTable(tableModel);
-        habitTable.setRowHeight(28);
-        habitTable.setFont(new java.awt.Font("Segoe UI", java.awt.Font.PLAIN, 14));
-        habitTable.getTableHeader().setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 14));
-        habitTable.setFillsViewportHeight(true);
+        habitTable.setRowHeight(40);
+        habitTable.setFont(new java.awt.Font("Segoe UI", java.awt.Font.PLAIN, 15));
+        habitTable.getTableHeader().setReorderingAllowed(false);
 
         JScrollPane scrollPane = new JScrollPane(habitTable);
-        scrollPane.setBorder(BorderFactory.createTitledBorder("Sve navike"));
-        mainPanel.add(scrollPane, BorderLayout.SOUTH);
+        scrollPane.setBorder(BorderFactory.createTitledBorder(
+                new LineBorder(Color.WHITE), "AKTIVNE NAVIKE",
+                TitledBorder.LEFT, TitledBorder.TOP,
+                new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 14), Color.WHITE));
+
+        centerContainer.add(scrollPane, BorderLayout.CENTER);
+        mainPanel.add(centerContainer, BorderLayout.CENTER);
     }
 
     private void addHabit() {
         String habit = habitField.getText().trim();
         if (habit.isEmpty()) {
-            JOptionPane.showMessageDialog(mainPanel, "Unesite naziv navike!");
+            JOptionPane.showMessageDialog(mainPanel, "Unesite validan naziv navike.");
             return;
         }
 
         dbManager.addHabitRecord(new HabitRecord(
-                userEmail,
-                habit,
-                completedCheckBox.isSelected(),
-                LocalDate.now().toString()
+                userEmail, habit, completedCheckBox.isSelected(), LocalDate.now().toString()
         ));
 
         habitField.setText("");
@@ -128,69 +162,65 @@ public class HabitTracker {
 
         for (String habit : habits) {
             boolean completed = dbManager.isHabitCompletedToday(userEmail, habit);
+            String status = completed ? "✓ IZVRŠENO" : "○ NA ČEKANJU";
+            String progress = String.format("%.1f%%", dbManager.getCompletionPercentage(userEmail, habit));
 
-            String status = completed ? "✅ Završeno" : "⚠ Fokus";
-
-            tableModel.addRow(new Object[]{habit, status, completed ? "Završeno" : ""});
+            tableModel.addRow(new Object[]{habit, status, progress});
         }
     }
-
 
     private void exportPDF() {
         try {
             JFileChooser fileChooser = new JFileChooser();
-            fileChooser.setDialogTitle("Odaberite lokaciju za PDF");
-            fileChooser.setSelectedFile(new File("HabitsReport.pdf"));
-            int userSelection = fileChooser.showSaveDialog(mainPanel);
-            if (userSelection != JFileChooser.APPROVE_OPTION) return;
+            fileChooser.setSelectedFile(new File("HabitStatistic" + LocalDate.now() + ".pdf"));
+            if (fileChooser.showSaveDialog(mainPanel) != JFileChooser.APPROVE_OPTION) return;
 
-            File pdfFile = fileChooser.getSelectedFile();
             Document document = new Document();
-            PdfWriter.getInstance(document, new FileOutputStream(pdfFile));
+            PdfWriter.getInstance(document, new FileOutputStream(fileChooser.getSelectedFile()));
             document.open();
 
-            // Naslov
-            Font titleFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 20);
-            Paragraph title = new Paragraph("Habit Tracker – Izvještaj", titleFont);
+
+            Font titleFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 24, BaseColor.BLACK);
+            Paragraph title = new Paragraph("IZVJEŠTAJ O NAVIKAMA", titleFont);
             title.setAlignment(Element.ALIGN_CENTER);
-            title.setSpacingAfter(20);
             document.add(title);
 
-            // Tabela
-            PdfPTable tablePdf = new PdfPTable(3);
-            tablePdf.setWidthPercentage(100);
-            tablePdf.setWidths(new int[]{5, 3, 2});
+            Paragraph info = new Paragraph("Korisnik: " + userEmail + "\nDatum izvještaja: " +
+                    LocalDate.now().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")) + "\n\n");
+            info.setAlignment(Element.ALIGN_CENTER);
+            document.add(info);
 
-            Font headerFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 14, BaseColor.WHITE);
-            BaseColor headerColor = new BaseColor(52, 152, 219);
-            String[] headers = {"Navika", "Status", "Procent"};
+
+            PdfPTable table = new PdfPTable(3);
+            table.setWidthPercentage(100);
+            table.setSpacingBefore(15f);
+
+            BaseColor headColor = new BaseColor(themeColor.getRed(), themeColor.getGreen(), themeColor.getBlue());
+            String[] headers = {"NAVIKA", "DANAŠNJI STATUS", "UKUPAN PROGRES"};
+
             for (String h : headers) {
-                PdfPCell cell = new PdfPCell(new Paragraph(h, headerFont));
-                cell.setBackgroundColor(headerColor);
+                PdfPCell cell = new PdfPCell(new Paragraph(h, FontFactory.getFont(FontFactory.HELVETICA_BOLD, 12, BaseColor.WHITE)));
+                cell.setBackgroundColor(headColor);
+                cell.setPadding(10);
                 cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-                cell.setPadding(5);
-                tablePdf.addCell(cell);
+                table.addCell(cell);
             }
 
-            Font cellFont = FontFactory.getFont(FontFactory.HELVETICA, 12);
             ArrayList<String> habits = dbManager.getUniqueHabits(userEmail);
             for (String habit : habits) {
                 boolean completed = dbManager.isHabitCompletedToday(userEmail, habit);
+                double percentage = dbManager.getCompletionPercentage(userEmail, habit);
 
-                String status = completed ? "✅ Završeno" : "⚠ Fokus";
-
-                tablePdf.addCell(new PdfPCell(new Paragraph(habit, cellFont)));
-                tablePdf.addCell(new PdfPCell(new Paragraph(status, cellFont)));
-                tablePdf.addCell(new PdfPCell(new Paragraph(completed ? "Završeno" : "", cellFont)));
+                table.addCell(new PdfPCell(new Paragraph(habit)));
+                table.addCell(new PdfPCell(new Paragraph(completed ? "Izvrseno" : "Nije izvrseno")));
+                table.addCell(new PdfPCell(new Paragraph(String.format("%.1f%%", percentage))));
             }
 
-
-            document.add(tablePdf);
+            document.add(table);
             document.close();
-
-            JOptionPane.showMessageDialog(mainPanel, "PDF uspješno kreiran na: " + pdfFile.getAbsolutePath());
+            JOptionPane.showMessageDialog(mainPanel, "Profesionalni PDF izvještaj je generisan.");
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(mainPanel, "Greška pri kreiranju PDF-a: " + e.getMessage());
+            JOptionPane.showMessageDialog(mainPanel, "Greška pri generisanju PDF-a: " + e.getMessage());
         }
     }
 
@@ -198,20 +228,20 @@ public class HabitTracker {
         JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(mainPanel);
         frame.setContentPane(new MainPanel(userEmail));
         frame.revalidate();
-        frame.repaint();
     }
 
     private JButton createButton(String text, Color bg) {
         JButton b = new JButton(text);
         b.setBackground(bg);
         b.setForeground(Color.WHITE);
-        b.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 14));
+        b.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 12));
         b.setFocusPainted(false);
         b.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        b.setBorder(BorderFactory.createCompoundBorder(
+                new LineBorder(bg.darker(), 1),
+                BorderFactory.createEmptyBorder(10, 20, 10, 20)));
         return b;
     }
 
-    public JPanel getMainPanel() {
-        return mainPanel;
-    }
+    public JPanel getMainPanel() { return mainPanel; }
 }
