@@ -46,6 +46,11 @@ public class SessionManager {
             return new Color(166, 244, 136);
         }
 
+       // public static Color getColor(String theme) {
+           // if (theme == null) {
+               // return new Color(166, 244, 136);
+           // }
+
         switch (theme) {
             case "Plava":
                 return new Color(0, 102, 204);

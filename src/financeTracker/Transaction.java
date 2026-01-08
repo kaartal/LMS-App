@@ -40,6 +40,11 @@ public class Transaction {
         //this.detailsInfo = detailsInfo;
     }
 
+
+    //public Transaction(String userEmail) {
+        //this.userEmail = userEmail;
+    //}
+
     public Document toDocument() {
         return new Document("Vrsta", type)
                 .append("Iznos", amount)

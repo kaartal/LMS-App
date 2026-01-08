@@ -29,6 +29,8 @@ public class UserService {
                 .append("lastname", lastname)
                 .append("password", password)
                 .append("theme", theme);
+       // .append("password", password)
+              //  .append("theme", theme);
 
 
         return users.updateOne(

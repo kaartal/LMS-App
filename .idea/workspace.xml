@@ -4,8 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="33484977-05ec-402e-a671-0b8d22633738" name="Changes" comment="Add login and register form, UI Main panel">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="33484977-05ec-402e-a671-0b8d22633738" name="Changes" comment="Added others trackers, simple UI and functions">
+      <change beforePath="$PROJECT_DIR$/src/financeTracker/Transaction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/financeTracker/Transaction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fitnesTracker/FitnessPlanner.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fitnesTracker/FitnessPlanner.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/habitTracker/HabitInformationTransfer.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/habitTracker/HabitRecord.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/habitTracker/HabitTracker.form" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/habitTracker/HabitTracker.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lifemanagmentsystem/SessionManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/lifemanagmentsystem/SessionManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/studyPlanner/StudyInformationTransfer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/studyPlanner/StudyInformationTransfer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/studyPlanner/StudyPlanner.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/studyPlanner/StudyPlanner.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/studyPlanner/StudyRecord.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/studyPlanner/StudyRecord.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -28,12 +37,12 @@
     &quot;assignee&quot;: &quot;kaartal&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/kaartal/lifeManagmentApplication.git",
-    "accountId": "cde8cc80-8967-44d9-b081-fa258300ec47"
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/kaartal/lifeManagmentSystem.git&quot;,
+    &quot;accountId&quot;: &quot;cde8cc80-8967-44d9-b081-fa258300ec47&quot;
   }
-}]]></component>
+}</component>
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="CurrentFile" />
   </component>
@@ -49,6 +58,7 @@
   "keyToString": {
     "Application.LoginUser.executor": "Run",
     "Application.Main.executor": "Run",
+    "Application.StudyPlanner.executor": "Run",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
@@ -57,10 +67,10 @@
     "git-widget-placeholder": "main",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/halid/OneDrive/Dokumenti/GitHub/lifeManagmentApplication",
+    "last_opened_file_path": "C:/Users/halid/OneDrive/Dokumenti/GitHub/lifeManagmentSystem",
     "project.structure.last.edited": "Libraries",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0"
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2"
   }
 }]]></component>
   <component name="RecentsManager">
@@ -70,6 +80,26 @@
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\halid\OneDrive\Dokumenti\GitHub\lifeManagmentSystem\src\financeTracker" />
     </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="StudyPlanner" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="studyPlanner.StudyPlanner" />
+      <module name="LMS2" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="studyPlanner.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.StudyPlanner" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -107,21 +137,7 @@
       <option name="presentableId" value="LOCAL−00004" />
       <updated>1767310689228</updated>
     </task>
-    <task id="LOCAL−00005" summary="Add login and register form, UI Main panel">
-      <option name="closed" value="true" />
-      <created>1767379929514</created>
-      <option name="number" value="LOCAL−00005" />
-      <option name="presentableId" value="LOCAL−00005" />
-      <updated>1767379929514</updated>
-    </task>
-    <task id="LOCAL−00006" summary="Add login and register form, UI Main panel">
-      <option name="closed" value="true" />
-      <created>1767380911300</created>
-      <option name="number" value="LOCAL−00006" />
-      <option name="presentableId" value="LOCAL−00006" />
-      <updated>1767380911300</updated>
-    </task>
-    <option name="localTasksCounter" value="7" />
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -138,7 +154,6 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Added financeTracker form in Project" />
     <MESSAGE value="Added others trackers, simple UI and functions" />
-    <MESSAGE value="Add login and register form, UI Main panel" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add login and register form, UI Main panel" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added others trackers, simple UI and functions" />
   </component>
 </project>
